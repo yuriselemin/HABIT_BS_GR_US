@@ -7,7 +7,7 @@ from datetime import timedelta, datetime
 from .models import Habit, DailyProgress
 from .forms import HabitForm, DailyProgressForm
 
-# Новая функция для страницы приветствия
+# Функция для страницы приветствия
 def welcome(request):
     if request.user.is_authenticated:
         return redirect('home')

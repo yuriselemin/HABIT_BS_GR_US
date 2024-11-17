@@ -1,6 +1,4 @@
 from django import forms
-
-# Импортируем наши модели
 from .models import Habit, DailyProgress
 
 # Форма для добавления новой привычки

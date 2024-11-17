@@ -7,5 +7,5 @@ urlpatterns = [
     path('add-habit/', add_habit, name='add_habit'),
     path('daily-progress/<int:habit_id>/', daily_progress, name='daily_progress'),
     path('home/', home, name='home'),
-    path('', welcome, name='welcome'),  # Новая домашняя страница
+    path('', welcome, name='welcome'),
 ]
