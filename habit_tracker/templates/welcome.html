@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добро пожаловать</title>
+</head>
+<body>
+    <h1>Добро пожаловать в наш трекер привычек!</h1>
+    <p>Здесь вы сможете легко следить за своими привычками и достигать своих целей.</p>
+    <div>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}">Зарегистрируйся сейчас</a>
+        {% else %}
+            <a href="{% url 'home' %}">Перейти к своим привычкам</a>
+        {% endif %}
+    </div>
+</body>
+</html>

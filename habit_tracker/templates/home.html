@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+</head>
+<body>
+    <h1>Привет, {{ request.user.username }}!</h1>
+    <p>Вот твои текущие привычки:</p>
+    <ul>
+        {% for habit in habits %}
+            <li>{{ habit.name }} (начало: {{ habit.start_date }}, окончание: {{ habit.end_date }})</li>
+            <a href="{% url 'daily_progress' habit.id %}">Фиксировать прогресс</a>
+        {% empty %}
+            У тебя пока нет привычек. Почему бы не создать одну?
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_habit' %}">Добавить новую привычку</a>
+</body>
+</html>
