@@ -5,6 +5,17 @@
     <title>Фиксация прогресса</title>
 </head>
 <body>
+      <!-- Хедер -->
+    <header>
+        <nav>
+            <a href="{% url 'welcome' %}">Главная</a>
+            <a href="{% url 'home' %}">Привычки</a>
+            <a href="{% url 'register' %}">Регистрация</a>
+        </nav>
+    </header>
+
+    <!-- Основной контент -->
+    <div class="container">
     <h1>Фиксация прогресса для "{{ habit.name }}"</h1>
 
     <form method="post">
@@ -12,5 +23,11 @@
         {{ form.as_p }}
         <button type="submit">Зафиксировать</button>
     </form>
+           </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>© 2023 Все права защищены.</p>
+    </footer>
 </body>
 </html>

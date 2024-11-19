@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Регистрация</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
 </head>
 <body>
+        <!-- Хедер -->
+    <header>
+        <nav>
+            <a href="{% url 'welcome' %}">Главная</a>
+            <a href="{% url 'home' %}">Привычки</a>
+            <a href="{% url 'register' %}">Регистрация</a>
+        </nav>
+    </header>
+     <div class="container">
     <h1>Регистрация</h1>
     <form method="post">
         {% csrf_token %}
@@ -18,5 +25,10 @@
         <input type="password" id="confirm_password" name="confirm_password"><br><br>
         <button type="submit">Зарегистрироваться</button>
     </form>
+      </div>
+            <!-- Футер -->
+    <footer>
+        <p>© 2023 Все права защищены.</p>
+    </footer>
 </body>
 </html>
