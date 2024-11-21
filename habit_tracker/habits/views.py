@@ -4,8 +4,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import timedelta, datetime
-from .models import Habit, DailyProgress
+from .models import Habit, DailyProgress, Users
 from .forms import HabitForm, DailyProgressForm
+from matplotlib import pyplot as plt
+from io import BytesIO
+import base64
 
 
 # Функция для страницы приветствия
@@ -21,6 +24,8 @@ def register_user(request):
         username = request.POST['username']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
+        first_name = request.POST.get('first_name', '')
+        last_name = request.POST.get('last_name', '')
 
         if password != confirm_password:
             messages.error(request, "Пароли не совпадают!")
@@ -32,6 +37,9 @@ def register_user(request):
             return redirect('register')
         except User.DoesNotExist:
             user = User.objects.create_user(username=username, password=password)
+            users_profile = Users(user=user, first_name=first_name, last_name=last_name)
+            users_profile.save()
+
             login(request, user)
             messages.success(request, "Вы успешно зарегистрированы!")
             return redirect('home')
@@ -61,6 +69,25 @@ def add_habit(request):
 @login_required
 def daily_progress(request, habit_id):
     habit = Habit.objects.get(id=habit_id)
+
+    # Переносим функциональность сюда
+    progress_data = habit.daily_progress.all().values_list('date', 'completed')
+    dates = [p[0].strftime('%d-%m-%Y') for p in progress_data]
+    completions = [bool(p[1]) for p in progress_data]
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.plot(dates, completions, marker='o', linestyle='-', color='b')
+    ax.set_xlabel('Дата')
+    ax.set_ylabel('Статус выполнения')
+    ax.grid(True)
+
+    buf = BytesIO()
+    fig.savefig(buf, format='png')
+    buf.seek(0)
+    graph = base64.b64encode(buf.read()).decode('utf-8')
+
+    plt.close(fig)
+
     if request.method == 'POST':
         form = DailyProgressForm(request.POST)
         if form.is_valid():
@@ -72,7 +99,9 @@ def daily_progress(request, habit_id):
             return redirect('home')
     else:
         form = DailyProgressForm()
-    return render(request, 'daily_progress.html', {'form': form, 'habit': habit})
+
+    context = {'form': form, 'habit': habit, 'graph': graph}  # Передаем график в контекст
+    return render(request, 'daily_progress.html', context)
 
 
 # Главная страница с перечнем привычек пользователя
