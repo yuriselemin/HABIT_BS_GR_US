@@ -21,11 +21,15 @@ def welcome(request):
 # Функция регистрации нового пользователя
 def register_user(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
         first_name = request.POST.get('first_name', '')
         last_name = request.POST.get('last_name', '')
+
+        if not username or not password or not confirm_password:
+            messages.error(request, "Все поля обязательны для заполнения.")
+            return redirect('register')
 
         if password != confirm_password:
             messages.error(request, "Пароли не совпадают!")
