@@ -27,10 +27,6 @@ def register_user(request):
         first_name = request.POST.get('first_name', '')
         last_name = request.POST.get('last_name', '')
 
-        if not username or not password or not confirm_password:
-            messages.error(request, "Все поля обязательны для заполнения.")
-            return redirect('register')
-
         if password != confirm_password:
             messages.error(request, "Пароли не совпадают!")
             return redirect('register')
